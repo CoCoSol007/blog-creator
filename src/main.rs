@@ -37,6 +37,7 @@ fn get_command() -> Option<Command> {
         "quit" => Some(Command::Quit),
         "clear" => Some(Command::Clear),
         "create" => Some(Command::Create),
+        "help" => Some(Command::Help),
         _ => None,
     }
 }

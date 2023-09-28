@@ -12,6 +12,7 @@ pub enum Command {
     Show(u8),
     Del(u8),
     Create,
+    Help,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -31,10 +32,21 @@ impl Command {
             Command::Show(index) => show_index(index),
             Command::Del(index) => sup_index_by_data(index),
             Command::Create => create_article(),
+            Command::Help => help(),
         }
     }
 }
 
+fn help() {
+    println!("Available commands:");
+    println!("quit: Quit the program.");
+    println!("list: List all articles.");
+    println!("clear: Clear the console screen.");
+    println!("show <index>: Show the details of the article at the specified index.");
+    println!("del <index>: Delete the article at the specified index.");
+    println!("create: Create a new article.");
+    println!("help: Display this help message.");
+}
 fn list() {
     let articles = open_json();
     if articles.is_empty() {
