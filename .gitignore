@@ -1,1 +1,40 @@
 /target
+
+# Dossiers et fichiers générés
+node_modules/
+dist/
+build/
+coverage/
+
+# Fichiers d'environnement
+.env
+.env.local
+.env.*.local
+
+# Fichiers de journalisation
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Fichiers de sauvegarde
+*.bak
+*.swp
+
+# Fichiers temporaires
+*.tmp
+
+# Fichiers de configuration spécifiques à l'éditeur (par exemple, VSCode)
+.vscode/
+.idea/
+
+# Fichiers de dépendances JavaScript (par exemple, package-lock.json, yarn.lock)
+package-lock.json
+yarn.lock
+
+# Fichiers de génération (par exemple, dist, build, *.min.js)
+*.min.js
+
+# Dossiers spécifiques à certains outils (par exemple, jest, cypress)
+/jest-screenshot-reporter/
+/cypress/videos/
