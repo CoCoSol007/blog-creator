@@ -6,10 +6,7 @@ const app = express();
 
 app.use(cors()); // Utilisez CORS pour gérer les en-têtes CORS
 
-app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    const filePath = 'data.json';
-
+function sendJsonResponse(res, filePath) {
     fs.access(filePath, fs.constants.F_OK, (err) => {
         if (err) {
             const responseJson = {
@@ -30,6 +27,18 @@ app.get('/', (req, res) => {
             });
         }
     });
+}
+
+app.get('/data', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const filePath = 'data/data.json';
+    sendJsonResponse(res, filePath);
+});
+
+app.get('/articles', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const filePath = 'data/articles.json';
+    sendJsonResponse(res, filePath);
 });
 
 const port = 3000;

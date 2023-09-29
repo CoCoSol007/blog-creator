@@ -22,7 +22,7 @@ function createH1WithButton(title, text, path) {
 
 // Fonction pour lire le fichier CSV
 function readJSONAndCreateH1() {
-    fetch('http://localhost:3000')
+    fetch('http://localhost:3000/articles')
         .then(response => response.json())
         .then(data => {
             data.forEach(function (item) {
@@ -32,7 +32,7 @@ function readJSONAndCreateH1() {
                 createH1WithButton(title, text, path);
             });
         })
-        .catch(error => console.error('Erreur de chargement du JSON :', error));
+        .catch(error => console.error('Erreur de chargement du JSON : ARTICLES :', error));
 }
 
 // Appeler la fonction pour lire le CSV et créer les boutons
