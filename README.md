@@ -10,6 +10,13 @@ Listing of all existing articles.
 Detailed display of a specific article.
 Simple command-line user interface.
 # Usage
+- first, you need to run a server made in Java-Scrpite :
+```bash
+// To compile and run the Java Scripte program (server)
+node website/server.js
+```
+
+
 - To run the command-line program, use the following commands:
 ```bash
 // To compile and run the Rust program
