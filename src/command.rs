@@ -16,8 +16,8 @@ pub enum Command {
     Quit,
     List,
     Clear,
-    Show(usize),
-    Del(usize),
+    Show(u8),
+    Del(u8),
     Create,
     Help,
 }
@@ -58,9 +58,9 @@ fn list() {
     }
 }
 
-fn show_index(index: usize) {
+fn show_index(index: u8) {
     let articles = open_json();
-    if let Some(article) = articles.get(index) {
+    if let Some(article) = articles.get((index -1) as usize) {
         println!("Title: {}", article.title);
         println!("Description: {}", article.description);
         println!("Path: {}", article.path);
@@ -72,7 +72,7 @@ fn show_index(index: usize) {
 }
 
 fn open_json() -> Vec<Article> {
-    match File::open("../website/data/articles.json") {
+    match File::open("website/data/articles.json") {
         Ok(mut file) => {
             let mut json_data = String::new();
             if file.read_to_string(&mut json_data).is_err() {
@@ -108,21 +108,22 @@ pub fn clear_console() {
     println!("Made by CoCo_Sol");
 }
 
-fn sup_index_by_data(id: usize) {
+fn sup_index_by_data(id: u8) {
     let mut articles = open_json();
-    if id < articles.len() {
-        let article_path = &articles[id].path;
+    let id = id - 1;
+    if (id as usize )< articles.len() {
+        let article_path = &articles[id as usize].path;
 
-        if let Err(e) = remove_file(format!("../website/{}", article_path)) {
+        if let Err(e) = remove_file(format!("website/{}", article_path)) {
             eprintln!("Error deleting HTML file: {}. path : website/{}", e, article_path);
         }
 
-        articles.remove(id);
+        articles.remove(id as usize);
 
         sync_article(articles)
-        
+
     } else {
-        println!("Index {} doesn't exist, they have just:", id + 1);
+        println!("Index {} doesn't exist, they have just:", id + 1 );
         list();
     }
 }
@@ -162,7 +163,7 @@ fn create_article() {
 
 fn sync_article(articles: Vec<Article>)
 {
-    if let Ok(file) = File::create("../website/data/articles.json") {
+    if let Ok(file) = File::create("website/data/articles.json") {
         if serde_json::to_writer_pretty(file, &articles).is_err() {
             eprintln!("Unable to write to the JSON file.");
         }else{
@@ -195,7 +196,7 @@ fn create_html_file(title: String,description:String) {
         title, title, description
     );
     if let Ok(mut html_file) =
-                File::create(format!("../website/articles/{}.html", title.trim()))
+                File::create(format!("website/articles/{}.html", title.trim()))
             {
                 html_file
                     .write_all(html_content.as_bytes())

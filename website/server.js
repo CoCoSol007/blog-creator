@@ -41,6 +41,32 @@ app.get('/articles', (req, res) => {
     sendJsonResponse(res, filePath);
 });
 
+const path = require('path'); // Importez le module path
+
+app.get('/style.css', (req, res) => {
+    const filePath = path.join(__dirname, 'articles', 'style.css'); // Construire un chemin absolu
+    res.setHeader('Content-Type', 'text/css'); // Définir le type de contenu comme CSS
+    res.sendFile(filePath);
+});
+
+
+app.get('/articles.js', (req, res) => {
+    const filePath = path.join(__dirname, 'js', 'articles.js'); // Construire un chemin absolu
+    res.setHeader('Content-Type', 'application/javascript'); // Définir le type de contenu comme JavaScript
+    res.sendFile(filePath);
+});
+
+app.get('/name.js', (req, res) => {
+    const filePath = path.join(__dirname, 'js', 'name.js'); // Construire un chemin absolu
+    res.setHeader('Content-Type', 'application/javascript'); // Définir le type de contenu comme JavaScript
+    res.sendFile(filePath);
+});
+
+app.get('/blog.html', (req, res) => {
+    const filePath = path.join(__dirname, 'main.html'); // Construire un chemin absolu
+    res.sendFile(filePath);
+});
+
 const port = 3000;
 
 app.listen(port, () => {

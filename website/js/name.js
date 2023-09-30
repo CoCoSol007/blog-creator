@@ -1,6 +1,6 @@
 
 function get_name() {
-    return fetch('http://localhost:3000/data')
+    return fetch('http://192.168.1.19:3000/data')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Réponse du serveur non valide');
