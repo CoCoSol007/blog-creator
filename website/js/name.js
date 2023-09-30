@@ -22,7 +22,7 @@ get_name()
     .then(name => {
         const h1 = document.createElement("h1");
         h1.textContent = name;
-        const targetDiv = document.getElementById("main");
+        const targetDiv = document.getElementById("title");
         targetDiv.appendChild(h1); // Ajoute le <h1> à la fin du corps de la page
     })
     .catch(error => {
