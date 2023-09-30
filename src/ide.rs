@@ -131,19 +131,6 @@ impl Row {
         EditorRows::render_row(self)
     }
 
-    fn get_row_content_x(&self, render_x: usize) -> usize {
-        let mut current_render_x = 0;
-        for (cursor_x, ch) in self.row_content.chars().enumerate() {
-            if ch == '\t' {
-                current_render_x += (TAB_STOP - 1) - (current_render_x % TAB_STOP);
-            }
-            current_render_x += 1;
-            if current_render_x > render_x {
-                return cursor_x;
-            }
-        }
-        0
-    }
 }
 
 struct EditorRows {
@@ -381,35 +368,8 @@ impl io::Write for EditorContents {
     }
 }
 
-enum SearchDirection {
-    Forward,
-    Backward,
-}
 
-struct SearchIndex {
-    x_index: usize,
-    y_index: usize,
-    x_direction: Option<SearchDirection>,
-    y_direction: Option<SearchDirection>,
-}
 
-impl SearchIndex {
-    fn new() -> Self {
-        Self {
-            x_index: 0,
-            y_index: 0,
-            x_direction: None,
-            y_direction: None,
-        }
-    }
-
-    fn reset(&mut self) {
-        self.y_index = 0;
-        self.x_index = 0;
-        self.y_direction = None;
-        self.x_direction = None;
-    }
-}
 
 struct Output {
     win_size: (usize, usize),
@@ -418,7 +378,6 @@ struct Output {
     editor_rows: EditorRows,
     status_message: StatusMessage,
     dirty: u64,
-    search_index: SearchIndex, // add line
 }
 
 impl Output {
@@ -432,10 +391,9 @@ impl Output {
             cursor_controller: CursorController::new(win_size),
             editor_rows: EditorRows::new(path),
             status_message: StatusMessage::new(
-                "HELP: Ctrl-S = Save | Ctrl-C = Quit | Ctrl-F = Find".into(),
+                "HELP: Ctrl-S = Save | Ctrl-C = Quit ".into(),
             ),
             dirty: 0,
-            search_index: SearchIndex::new(), // add line
         }
     }
 
@@ -444,100 +402,7 @@ impl Output {
         execute!(stdout(), cursor::MoveTo(0, 0)).expect("Error");
     }
 
-    fn find_callback(output: &mut Output, keyword: &str, key_code: KeyCode) {
-        match key_code {
-            KeyCode::Esc | KeyCode::Enter => {
-                output.search_index.reset();
-            }
-            _ => {
-                output.search_index.y_direction = None;
-                output.search_index.x_direction = None;
-                match key_code {
-                    KeyCode::Down => {
-                        output.search_index.y_direction = SearchDirection::Forward.into()
-                    }
-                    KeyCode::Up => {
-                        output.search_index.y_direction = SearchDirection::Backward.into()
-                    }
-                    KeyCode::Left => {
-                        output.search_index.x_direction = SearchDirection::Backward.into()
-                    }
-                    KeyCode::Right => {
-                        output.search_index.x_direction = SearchDirection::Forward.into()
-                    }
-                    _ => {}
-                }
-                for i in 0..output.editor_rows.number_of_rows() {
-                    let row_index = match output.search_index.y_direction.as_ref() {
-                        None => {
-                            /* modify */
-                            if output.search_index.x_direction.is_none() {
-                                output.search_index.y_index = i;
-                            }
-                            output.search_index.y_index
-                        }
-                        Some(dir) => {
-                            if matches!(dir, SearchDirection::Forward) {
-                                output.search_index.y_index + i + 1
-                            } else {
-                                let res = output.search_index.y_index.saturating_sub(i);
-                                if res == 0 {
-                                    break;
-                                }
-                                res - 1
-                            }
-                        }
-                    };
-                    if row_index > output.editor_rows.number_of_rows() - 1 {
-                        break;
-                    }
-                    let row = output.editor_rows.get_editor_row(row_index);
-                    /* add the following */
-                    let index = match output.search_index.x_direction.as_ref() {
-                        None => row.render.find(&keyword),
-                        Some(dir) => {
-                            let index = if matches!(dir, SearchDirection::Forward) {
-                                let start =
-                                    cmp::min(row.render.len(), output.search_index.x_index + 1);
-                                row.render[start..]
-                                    .find(&keyword)
-                                    .map(|index| index + start)
-                            } else {
-                                row.render[..output.search_index.x_index].rfind(&keyword)
-                            };
-                            if index.is_none() {
-                                break;
-                            }
-                            index
-                        }
-                    };
-                    // modify
-                    if let Some(index) = index {
-                        output.cursor_controller.cursor_y = row_index;
-                        output.search_index.y_index = row_index;
-                        output.search_index.x_index = index; // add line
-                        output.cursor_controller.cursor_x = row.get_row_content_x(index);
-                        output.cursor_controller.row_offset = output.editor_rows.number_of_rows();
-                        break;
-                    }
-                }
-            }
-        }
-    }
 
-    fn find(&mut self) -> io::Result<()> {
-        let cursor_controller = self.cursor_controller;
-        if prompt!(
-            self,
-            "Search: {} (Use ESC / Arrows / Enter)", // modify
-            callback = Output::find_callback
-        )
-        .is_none()
-        {
-            self.cursor_controller = cursor_controller
-        }
-        Ok(())
-    }
 
     fn draw_message_bar(&mut self) {
         queue!(
@@ -773,11 +638,6 @@ impl Editor {
                     }
                 }
             }            
-            KeyEvent {
-                code: KeyCode::Char('f'),
-                modifiers: KeyModifiers::CONTROL, kind: _, state: _ } => {
-                let _ = self.output.find();
-            }
             KeyEvent {
                 code: key @ (KeyCode::Backspace | KeyCode::Delete),
                 modifiers: KeyModifiers::NONE, kind: _, state: _ } => {
