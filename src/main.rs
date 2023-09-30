@@ -19,7 +19,7 @@ fn get_command() -> Option<Command> {
     if let Some(index) = command.find("show ") {
         let resultat = &command[(index + "show ".len())..].trim();
         if let Ok(valeur) = resultat.parse::<u8>() {
-            return Some(Command::Show(valeur));
+            return Some(Command::Show(valeur.into()));
         } else {
             println!("Wrong argument ! (you must give an index)");
         }
@@ -27,7 +27,7 @@ fn get_command() -> Option<Command> {
     if let Some(index) = command.find("del ") {
         let resultat = &command[(index + "del ".len())..].trim();
         if let Ok(valeur) = resultat.parse::<u8>() {
-            return Some(Command::Del(valeur));
+            return Some(Command::Del(valeur.into()));
         } else {
             println!("Wrong argument ! (you must give an index)");
         }
