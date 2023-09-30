@@ -141,7 +141,7 @@ fn sup_index_by_data(id: u8) {
             println!("HTML file remove");
         }
         if let Err(e) = remove_file(format!("website//articles/{}", article_title)) {
-            eprintln!("Error deleting HTML file: {}. path : website/articles/{}", e, article_title);
+            eprintln!("Error deleting Text file: {}. path : website/articles/{}", e, article_title);
         } else {
             println!("Text file remove");
         }
