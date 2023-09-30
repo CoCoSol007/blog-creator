@@ -3,6 +3,9 @@ use clear_screen::clear;
 use serde_derive::{Deserialize, Serialize};
 use std::fs::{remove_file, File};
 use std::io::{self, Read, Write};
+use crate::ide::run;
+
+
 
 #[derive(Debug, Deserialize, Serialize)]
 struct Article {
@@ -16,6 +19,7 @@ pub enum Command {
     Quit,
     List,
     Clear,
+    Wirte(u8),
     Show(u8),
     Del(u8),
     Create,
@@ -32,8 +36,14 @@ impl Command {
             Command::Del(index) => sup_index_by_data(index),
             Command::Create => create_article(),
             Command::Help => help(),
+            Command::Wirte(index) => wirte(index),
         }
     }
+}
+
+fn wirte(index:u8){
+    let _ = index;
+    run()
 }
 
 fn help() {

@@ -1,5 +1,5 @@
 pub mod command;
-
+pub mod ide;
 use crate::command::{clear_console, Command};
 
 fn main() {
@@ -28,6 +28,15 @@ fn get_command() -> Option<Command> {
         let resultat = &command[(index + "del ".len())..].trim();
         if let Ok(valeur) = resultat.parse::<u8>() {
             return Some(Command::Del(valeur));
+        } else {
+            println!("Wrong argument ! (you must give an index)");
+        }
+    }
+
+    if let Some(index) = command.find("wirte ") {
+        let resultat = &command[(index + "wirte ".len())..].trim();
+        if let Ok(valeur) = resultat.parse::<u8>() {
+            return Some(Command::Wirte(valeur));
         } else {
             println!("Wrong argument ! (you must give an index)");
         }
