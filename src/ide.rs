@@ -440,7 +440,7 @@ impl Output {
             cursor_controller: CursorController::new(win_size),
             editor_rows: EditorRows::new(),
             status_message: StatusMessage::new(
-                "HELP: Ctrl-S = Save | Ctrl-Q = Quit | Ctrl-F = Find".into(),
+                "HELP: Ctrl-S = Save | Ctrl-C = Quit | Ctrl-F = Find".into(),
             ),
             dirty: 0,
             search_index: SearchIndex::new(), // add line
@@ -671,7 +671,7 @@ impl Output {
                     (0..padding).for_each(|_| self.editor_contents.push(' '));
                     self.editor_contents.push_str(&welcome);
                 } else {
-                    self.editor_contents.push('~');
+                    self.editor_contents.push('-');
                 }
             } else {
                 let row = self.editor_rows.get_render(file_row);
@@ -743,14 +743,14 @@ impl Editor {
     fn process_keypress(&mut self) -> bool {
         match self.reader.read_key() {
             KeyEvent {
-                code: KeyCode::Char('q'),
+                code: KeyCode::Char('c'),
                 modifiers: KeyModifiers::CONTROL,
                 kind: _,
                 state: _,
             } => {
                 if self.output.dirty > 0 && self.quit_times > 0 {
                     self.output.status_message.set_message(format!(
-                        "WARNING!!! File has unsaved changes. Press Ctrl-Q {} more times to quit.",
+                        "WARNING!!! File has unsaved changes. Press Ctrl-C {} more times to quit.",
                         self.quit_times
                     ));
                     self.quit_times -= 1;
