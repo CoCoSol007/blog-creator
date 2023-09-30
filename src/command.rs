@@ -42,8 +42,15 @@ impl Command {
 }
 
 fn wirte(index:u8){
-    let _ = index;
-    run()
+    let articles = open_json();
+    let id = index- 1;
+    if (id as usize )< articles.len() {
+        run(id);
+        clear_console()
+    } else {
+        println!("Index {} doesn't exist, they have just:", id + 1 );
+        list();
+    }
 }
 
 fn help() {
@@ -53,6 +60,7 @@ fn help() {
     println!("clear: Clear the console screen.");
     println!("show <index>: Show the details of the article at the specified index.");
     println!("del <index>: Delete the article at the specified index.");
+    println!("wirte <index>: wirte or edite an article at the specified index.");
     println!("create: Create a new article.");
     println!("help: Display this help message.");
 }

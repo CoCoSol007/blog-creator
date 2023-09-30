@@ -845,7 +845,8 @@ impl Editor {
     }
 }
 
-pub fn run()  {
+pub fn run(index: u8)  {
+    let _ = index;
     let _clean_up = CleanUp;
     let _ = terminal::enable_raw_mode();
     let mut editor = Editor::new();
