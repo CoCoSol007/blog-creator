@@ -31,13 +31,13 @@ function sendJsonResponse(res, filePath) {
 
 app.get('/data', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const filePath = 'data/data.json';
+    const filePath = 'website/data/data.json';
     sendJsonResponse(res, filePath);
 });
 
 app.get('/articles', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const filePath = 'data/articles.json';
+    const filePath = 'website/data/articles.json';
     sendJsonResponse(res, filePath);
 });
 

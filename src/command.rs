@@ -82,7 +82,7 @@ fn show_index(index: u8) {
 
 fn open_json() -> Vec<Article> {
     // Ouvrir le fichier JSON
-    match File::open("website/data.json") {
+    match File::open("../website/data/articles.json") {
         Ok(mut file) => {
             let mut json_data = String::new();
             if file.read_to_string(&mut json_data).is_err() {
@@ -102,8 +102,8 @@ fn open_json() -> Vec<Article> {
                 }
             }
         }
-        Err(_) => {
-            eprintln!("Unable to open the JSON file.");
+        Err(e) => {
+            eprintln!("Unable to open the JSON file : {}",e);
             Vec::new()
         }
     }
@@ -127,12 +127,12 @@ fn sup_index_by_data(id: u8) {
         let article_path = &articles[index as usize].path;
 
         // Supprimez le fichier HTML s'il existe
-        if let Err(e) = remove_file(format!("website/{}", article_path)) {
+        if let Err(e) = remove_file(format!("../website/articles/{}", article_path)) {
             eprintln!("Error deleting HTML file: {}", e);
         }
 
         articles.remove(index as usize);
-        if let Ok(file) = File::create("website/data.json") {
+        if let Ok(file) = File::create("../website/data/articles.json") {
             // Sérialisez le vecteur d'articles en format JSON et écrivez-le dans le fichier
             if serde_json::to_writer_pretty(file, &articles).is_err() {
                 eprintln!("Unable to write to the JSON file.");
@@ -204,13 +204,13 @@ fn create_article() {
     articles.push(new_article);
 
     // Enregistrez la liste mise à jour dans le fichier JSON
-    if let Ok(file) = File::create("website/data.json") {
+    if let Ok(file) = File::create("../website/data/articles.json") {
         if serde_json::to_writer_pretty(file, &articles).is_err() {
             eprintln!("Unable to write to the JSON file.");
         } else {
             // Créez un fichier HTML vide avec un nom basé sur le titre de l'article
             if let Ok(mut html_file) =
-                File::create(format!("website/articles/{}.html", title.trim()))
+                File::create(format!("../website/articles/{}.html", title.trim()))
             {
                 html_file
                     .write_all(html_content.as_bytes())
