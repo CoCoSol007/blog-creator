@@ -45,7 +45,9 @@ fn wirte(index:u8){
     let articles = open_json();
     let id = index- 1;
     if (id as usize )< articles.len() {
-        run("website/articles/a".to_owned());
+        let article_title = &articles[id as usize].title;
+        let path = format!("website/articles/{article_title}");
+        run(path);
         clear_console()
     } else {
         println!("Index {} doesn't exist, they have just:", id + 1 );
@@ -131,10 +133,19 @@ fn sup_index_by_data(id: u8) {
     let id = id - 1;
     if (id as usize )< articles.len() {
         let article_path = &articles[id as usize].path;
+        let article_title= &articles[id as usize].title;
 
         if let Err(e) = remove_file(format!("website/{}", article_path)) {
             eprintln!("Error deleting HTML file: {}. path : website/{}", e, article_path);
+        } else {
+            println!("HTML file remove");
         }
+        if let Err(e) = remove_file(format!("website//articles/{}", article_title)) {
+            eprintln!("Error deleting HTML file: {}. path : website/articles/{}", e, article_title);
+        } else {
+            println!("Text file remove");
+        }
+
 
         articles.remove(id as usize);
 
@@ -223,4 +234,12 @@ fn create_html_file(title: String,description:String) {
             } else {
                 eprintln!("Unable to create HTML file.");
             }
+    if let Ok(_txt_file) =
+            File::create(format!("website/articles/{}", title.trim()))
+        {
+            
+            println!("New texte file page created successfully!");
+        } else {
+            eprintln!("Unable to create HTML file.");
+        }
 }
