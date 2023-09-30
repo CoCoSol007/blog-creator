@@ -1,11 +1,11 @@
 use crossterm::event::*;
 use crossterm::terminal::ClearType;
-use crossterm::{cursor, event, execute, queue, style, terminal};
+use crossterm::{cursor, event, execute, queue, terminal};
 use std::cmp::Ordering;
-use std::io::{stdout, ErrorKind, Write};
+use std::io::{stdout, Write};
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
-use std::{cmp, env, fs, io};
+use std::{cmp, fs, io};
 
 const TAB_STOP: usize = 8;
 const QUIT_TIMES: u8 = 3;
@@ -148,24 +148,19 @@ impl Row {
 
 struct EditorRows {
     row_contents: Vec<Row>,
-    filename: Option<PathBuf>,
+    filename: PathBuf,
 }
 
 impl EditorRows {
-    fn new() -> Self {
-        match env::args().nth(1) {
-            None => Self {
-                row_contents: Vec::new(),
-                filename: None,
-            },
-            Some(file) => Self::from_file(file.into()),
-        }
+    fn new(file:String) -> Self {
+        Self::from_file(file.into())
+        
     }
 
     fn from_file(file: PathBuf) -> Self {
         let file_contents = fs::read_to_string(&file).expect("Unable to read file");
         Self {
-            filename: Some(file),
+            filename: file,
             row_contents: file_contents
                 .lines()
                 .map(|it| {
@@ -225,10 +220,7 @@ impl EditorRows {
     }
 
     fn save(&mut self) -> io::Result<usize> {
-        match &self.filename {
-            None => Err(io::Error::new(ErrorKind::Other, "no file name specified")),
-            Some(name) => {
-                let mut file = fs::OpenOptions::new().write(true).create(true).open(name)?;
+                let mut file = fs::OpenOptions::new().write(true).create(true).open(&self.filename)?;
                 let contents: String = self
                     .row_contents
                     .iter()
@@ -238,8 +230,8 @@ impl EditorRows {
                 file.set_len(contents.len() as u64)?;
                 file.write_all(contents.as_bytes())?;
                 Ok(contents.as_bytes().len())
-            }
-        }
+            
+        
     }
 
     fn join_adjacent_rows(&mut self, at: usize) {
@@ -430,7 +422,7 @@ struct Output {
 }
 
 impl Output {
-    fn new() -> Self {
+    fn new(path:String) -> Self {
         let win_size = terminal::size()
             .map(|(x, y)| (x as usize, y as usize - 2))
             .unwrap();
@@ -438,7 +430,7 @@ impl Output {
             win_size,
             editor_contents: EditorContents::new(),
             cursor_controller: CursorController::new(win_size),
-            editor_rows: EditorRows::new(),
+            editor_rows: EditorRows::new(path),
             status_message: StatusMessage::new(
                 "HELP: Ctrl-S = Save | Ctrl-C = Quit | Ctrl-F = Find".into(),
             ),
@@ -618,39 +610,7 @@ impl Output {
         self.dirty += 1;
     }
 
-    fn draw_status_bar(&mut self) {
-        self.editor_contents
-            .push_str(&style::Attribute::Reverse.to_string());
-        let info = format!(
-            "{} {} -- {} lines",
-            self.editor_rows
-                .filename
-                .as_ref()
-                .and_then(|path| path.file_name())
-                .and_then(|name| name.to_str())
-                .unwrap_or("[No Name]"),
-            if self.dirty > 0 { "(modified)" } else { "" },
-            self.editor_rows.number_of_rows()
-        );
-        let info_len = cmp::min(info.len(), self.win_size.0);
-        let line_info = format!(
-            "{}/{}",
-            self.cursor_controller.cursor_y + 1,
-            self.editor_rows.number_of_rows()
-        );
-        self.editor_contents.push_str(&info[..info_len]);
-        for i in info_len..self.win_size.0 {
-            if self.win_size.0 - i == line_info.len() {
-                self.editor_contents.push_str(&line_info);
-                break;
-            } else {
-                self.editor_contents.push(' ')
-            }
-        }
-        self.editor_contents
-            .push_str(&style::Attribute::Reset.to_string());
-        self.editor_contents.push_str("\r\n");
-    }
+   
 
     fn draw_rows(&mut self) {
         let screen_rows = self.win_size.1;
@@ -698,7 +658,6 @@ impl Output {
         self.cursor_controller.scroll(&self.editor_rows);
         queue!(self.editor_contents, cursor::Hide, cursor::MoveTo(0, 0)).expect("Error");
         self.draw_rows();
-        self.draw_status_bar();
         self.draw_message_bar();
         let cursor_x = self.cursor_controller.render_x - self.cursor_controller.column_offset;
         let cursor_y = self.cursor_controller.cursor_y - self.cursor_controller.row_offset;
@@ -729,14 +688,16 @@ struct Editor {
     reader: Reader,
     output: Output,
     quit_times: u8,
+    path: String,
 }
 
 impl Editor {
-    fn new() -> Self {
+    fn new(path: String) -> Self {
         Self {
             reader: Reader,
-            output: Output::new(),
+            output: Output::new(path.clone()),
             quit_times: QUIT_TIMES,
+            path,
         }
     }
 
@@ -791,25 +752,27 @@ impl Editor {
             }
             KeyEvent {
                 code: KeyCode::Char('s'),
-                modifiers: KeyModifiers::CONTROL, kind: _, state: _ } => {
-                if matches!(self.output.editor_rows.filename, None) {
-                    let prompt = prompt!(&mut self.output, "Save as : {} (ESC to cancel)")
-                        .map(|it| it.into());
-                    if prompt.is_none() {
-                        self.output
-                            .status_message
-                            .set_message("Save Aborted".into());
-                        return true;
+                modifiers: KeyModifiers::CONTROL,
+                kind: _,
+                state: _,
+            } => {
+                // Set the desired path where you want to save the file
+                let path = PathBuf::from(&self.path);
+            
+                // Update the filename in editor_rows to the specified path
+                self.output.editor_rows.filename = path.clone();
+            
+                // Save the file using the specified path
+                match self.output.editor_rows.save() {
+                    Ok(len) => {
+                        self.output.status_message.set_message(format!("{} bytes written to disk", len));
+                        self.output.dirty = 0;
                     }
-                    self.output.editor_rows.filename = prompt
+                    Err(err) => {
+                        self.output.status_message.set_message(format!("Error saving file: {}", err));
+                    }
                 }
-                let _ = self.output.editor_rows.save().map(|len| {
-                    self.output
-                        .status_message
-                        .set_message(format!("{} bytes written to disk", len));
-                    self.output.dirty = 0
-                });
-            }
+            }            
             KeyEvent {
                 code: KeyCode::Char('f'),
                 modifiers: KeyModifiers::CONTROL, kind: _, state: _ } => {
@@ -845,10 +808,9 @@ impl Editor {
     }
 }
 
-pub fn run(index: u8)  {
-    let _ = index;
+pub fn run(path: String)  {
     let _clean_up = CleanUp;
     let _ = terminal::enable_raw_mode();
-    let mut editor = Editor::new();
+    let mut editor = Editor::new(path);
     while editor.run() {}
 }

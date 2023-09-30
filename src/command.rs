@@ -45,7 +45,7 @@ fn wirte(index:u8){
     let articles = open_json();
     let id = index- 1;
     if (id as usize )< articles.len() {
-        run(id);
+        run("website/articles/a".to_owned());
         clear_console()
     } else {
         println!("Index {} doesn't exist, they have just:", id + 1 );
