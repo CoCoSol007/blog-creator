@@ -127,8 +127,8 @@ fn sup_index_by_data(id: u8) {
         let article_path = &articles[index as usize].path;
 
         // Supprimez le fichier HTML s'il existe
-        if let Err(e) = remove_file(format!("../website/articles/{}", article_path)) {
-            eprintln!("Error deleting HTML file: {}", e);
+        if let Err(e) = remove_file(format!("../website/{}", article_path)) {
+            eprintln!("Error deleting HTML file: {}. path : website/{}", e,article_path );
         }
 
         articles.remove(index as usize);
