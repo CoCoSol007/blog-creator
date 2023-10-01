@@ -24,12 +24,17 @@ Creation of articles with a title, description, and automatic date.
 Deletion of articles based on their index.
 Listing of all existing articles.
 Detailed display of a specific article.
+IDE to write a lot of articles in terminal !
 Simple command-line user interface.
 # Usage
 - first, you need to run a server made in Java-Scrpite :
 ```bash
 // To compile and run the Java Scripte program (server)
 node website/server.js
+```
+- after that you can go on any browser and tap this url:
+```
+http://localhost:3000/
 ```
 
 
@@ -42,11 +47,10 @@ cargo run
 
 - Follow the on-screen instructions to manage your articles.
 
-- To display the articles in a web page, open the index.html file in a modern web browser. Ensure that the JSON file containing article data (data.json) is present in the "website" directory.
 
  # Dependencies
 Rust (programming language)
-Rust libraries: serde, serde_json, chrono
+Rust libraries: serde, serde_json, chrono...
 HTML and JavaScript (for displaying articles)
 # Project Structure
 src/main.rs: Main source code for the command-line program.
