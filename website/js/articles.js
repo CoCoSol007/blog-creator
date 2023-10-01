@@ -2,7 +2,7 @@
 function createH1WithButton(title, text, path) {
     const btn = document.createElement("button");
 
-    const h1 = document.createElement("h2");
+    const h1 = document.createElement("h3");
     h1.textContent = title;
 
     btn.appendChild(h1); // Ajoute le titre à l'intérieur du bouton
