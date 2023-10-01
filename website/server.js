@@ -64,9 +64,9 @@ app.get('/name.js', (req, res) => {
 
 
 
-app.get('/file/:nomFichier', (req, res) => {
+app.get('/', (req, res) => {
   const nomFichier = req.params.nomFichier;
-  const cheminFichier = path.join(__dirname, nomFichier);
+  const cheminFichier = path.join(__dirname, "main.html");
 
   fs.readFile(cheminFichier, 'utf8', (err, data) => {
     if (err) {

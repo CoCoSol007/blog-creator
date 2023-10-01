@@ -33,8 +33,8 @@ fn get_command() -> Option<Command> {
         }
     }
 
-    if let Some(index) = command.find("wirte ") {
-        let resultat = &command[(index + "wirte ".len())..].trim();
+    if let Some(index) = command.find("write ") {
+        let resultat = &command[(index + "write ".len())..].trim();
         if let Ok(valeur) = resultat.parse::<u8>() {
             return Some(Command::Wirte(valeur));
         } else {
@@ -47,6 +47,7 @@ fn get_command() -> Option<Command> {
         "clear" => Some(Command::Clear),
         "create" => Some(Command::Create),
         "help" => Some(Command::Help),
+        "edit" => Some(Command::Edit),
         _ => None,
     }
 }

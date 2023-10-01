@@ -7,6 +7,7 @@ use crate::ide::run;
 
 
 
+
 #[derive(Debug, Deserialize, Serialize)]
 struct Article {
     title: String,
@@ -24,6 +25,7 @@ pub enum Command {
     Del(u8),
     Create,
     Help,
+    Edit,
 }
 
 impl Command {
@@ -37,6 +39,7 @@ impl Command {
             Command::Create => create_article(),
             Command::Help => help(),
             Command::Wirte(index) => wirte(index),
+            Command::Edit => todo!()
         }
     }
 }
@@ -64,6 +67,7 @@ fn help() {
     println!("del <index>: Delete the article at the specified index.");
     println!("wirte <index>: wirte or edite an article at the specified index.");
     println!("create: Create a new article.");
+    println!("edit: edit the website (color...)");
     println!("help: Display this help message.");
 }
 
@@ -219,7 +223,7 @@ fn create_html_file(title: String,description:String) {
                 <h1>{}</h1>
                 <h2>{}</h2>
     
-                <a href="/file/main.html">Home</a> <br><br>
+                <a href="/">Home</a> <br><br>
                 <div id="article">
                     <script>
                         function get_name() {{

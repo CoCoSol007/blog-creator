@@ -340,10 +340,6 @@ impl EditorContents {
         }
     }
 
-    fn push(&mut self, ch: char) {
-        self.content.push(ch)
-    }
-
     fn push_str(&mut self, string: &str) {
         self.content.push_str(string)
     }
@@ -482,23 +478,7 @@ impl Output {
         let screen_columns = self.win_size.0;
         for i in 0..screen_rows {
             let file_row = i + self.cursor_controller.row_offset;
-            if file_row >= self.editor_rows.number_of_rows() {
-                if self.editor_rows.number_of_rows() == 0 && i == screen_rows / 3 {
-                    let mut welcome = format!("CoCo_Sol's IDE");
-                    if welcome.len() > screen_columns {
-                        welcome.truncate(screen_columns)
-                    }
-                    let mut padding = (screen_columns - welcome.len()) / 2;
-                    if padding != 0 {
-                        self.editor_contents.push('~');
-                        padding -= 1
-                    }
-                    (0..padding).for_each(|_| self.editor_contents.push(' '));
-                    self.editor_contents.push_str(&welcome);
-                } else {
-                    self.editor_contents.push('-');
-                }
-            } else {
+            if file_row < self.editor_rows.number_of_rows() {
                 let row = self.editor_rows.get_render(file_row);
                 let column_offset = self.cursor_controller.column_offset;
                 let len = cmp::min(row.len().saturating_sub(column_offset), screen_columns);
@@ -574,14 +554,6 @@ impl Editor {
                 kind: _,
                 state: _,
             } => {
-                if self.output.dirty > 0 && self.quit_times > 0 {
-                    self.output.status_message.set_message(format!(
-                        "WARNING!!! File has unsaved changes. Press Ctrl-C {} more times to quit.",
-                        self.quit_times
-                    ));
-                    self.quit_times -= 1;
-                    return true;
-                }
                 return false;
             }
             KeyEvent {
