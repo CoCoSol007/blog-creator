@@ -2,6 +2,7 @@ body {
     background-color: #fbfff4;
     font-family: 'Courier New', Courier, monospace;
     font-size: large;
+    align-content: center;
 }
 
 #main {
@@ -15,6 +16,16 @@ body {
     text-align: center;
     align-content: center;
     padding-bottom: 100px;
+}
+
+#article {
+    
+    margin: auto;
+    width: 90%;
+    border-radius: 50px;
+    background: #e8d497;
+    box-shadow:  20px 20px 44px #c5b480,
+                -20px -20px 44px #fff4ae;
 }
 
 footer {

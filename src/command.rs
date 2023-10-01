@@ -219,7 +219,7 @@ fn create_html_file(title: String,description:String) {
                 <h1>{}</h1>
                 <h2>{}</h2>
     
-                <a href="../main.html">Home</a>;
+                <a href="../main.html">Home</a> <br>
                 <div id="article">
                     <script>
                         function get_name() {{
@@ -238,7 +238,7 @@ fn create_html_file(title: String,description:String) {
     
                         get_name()
                             .then(name => {{
-                                const h1 = document.createElement("h3");
+                                const h1 = document.createElement("div");
                                 h1.textContent = name;
                                 const targetDiv = document.getElementById("article");
                                 targetDiv.appendChild(h1);
