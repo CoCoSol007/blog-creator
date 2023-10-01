@@ -28,7 +28,7 @@ function readJSONAndCreateH1() {
             data.forEach(function (item) {
                 const title = item.title;
                 const text = item.description;
-                const path = item.path;
+                const path = "/articles/" + item.title + ".html";
                 createH1WithButton(title, text, path);
             });
         })

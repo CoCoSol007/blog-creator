@@ -62,16 +62,11 @@ app.get('/name.js', (req, res) => {
     res.sendFile(filePath);
 });
 
-app.get('/blog.html', (req, res) => {
-    const filePath = path.join(__dirname, 'main.html'); // Construire un chemin absolu
-    res.sendFile(filePath);
-});
 
-const repertoireFichiers = '/website/articles/'; 
 
-app.get('/fichier/:nomFichier', (req, res) => {
+app.get('/file/:nomFichier', (req, res) => {
   const nomFichier = req.params.nomFichier;
-  const cheminFichier = path.join(__dirname, "articles",  nomFichier);
+  const cheminFichier = path.join(__dirname, nomFichier);
 
   fs.readFile(cheminFichier, 'utf8', (err, data) => {
     if (err) {
@@ -82,6 +77,31 @@ app.get('/fichier/:nomFichier', (req, res) => {
   });
 });
 
+app.get('/articles/:nomFichier', (req, res) => {
+    const nomFichier = req.params.nomFichier;
+    const cheminFichier = path.join(__dirname, "articles",nomFichier);
+  
+    fs.readFile(cheminFichier, 'utf8', (err, data) => {
+      if (err) {
+        res.status(404).send('Fichier non trouvé');
+      } else {
+        res.send(data);
+      }
+    });
+  });
+
+  app.get('/index/:nomFichier', (req, res) => {
+    const nomFichier = req.params.nomFichier;
+    const cheminFichier = path.join(__dirname,"index", nomFichier);
+  
+    fs.readFile(cheminFichier, 'utf8', (err, data) => {
+      if (err) {
+        res.status(404).send('Fichier non trouvé');
+      } else {
+        res.send(data);
+      }
+    });
+  });
 
 const port = 3000;
 

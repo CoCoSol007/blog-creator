@@ -212,18 +212,18 @@ fn create_html_file(title: String,description:String) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{}</title>
-            <link rel="stylesheet" href="style.css">
+            <link rel="stylesheet" href="/style.css">
         </head>
         <body>
             <div id="main">
                 <h1>{}</h1>
                 <h2>{}</h2>
     
-                <a href="../main.html">Home</a> <br>
+                <a href="/file/main.html">Home</a> <br><br>
                 <div id="article">
                     <script>
                         function get_name() {{
-                            return fetch('http://192.168.1.19:3000/fichier/{}')
+                            return fetch('/articles/{}')
                                 .then(response => {{
                                     if (!response.ok) {{
                                         throw new Error('Réponse du serveur non valide');
