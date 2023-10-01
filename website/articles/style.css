@@ -1,5 +1,5 @@
 body {
-    background-color: #124b54;
+    background-color: #fffded;
     font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: large;
     align-content: center;
@@ -15,7 +15,7 @@ a {
     width: 800px;
     margin: 0 auto;
     border-radius: 10px;
-    background: #f9774b;
+    background: #fffaca;
     text-align: center;
     align-content: center;
     padding-bottom: 100px;
@@ -25,8 +25,8 @@ a {
     
     margin: auto;
     width: 90%;
-    border-radius: 50px;
-    background: #d65b2e;
+    border-radius: 5px;
+    background: #fff7b3;
    
 }
 
@@ -38,16 +38,16 @@ footer {
 }
 
 button {
+    border-width: 0px;
+    margin: 10px;
     cursor: pointer;
 
-    margin-top: 10px;
     font-size: 15px;
-    border-radius: 5px;
     font-family: Arial;
     width: 90%;
-    border-width: 0px;
-    background-color: #d65b2e;
+    border-color: #124b54;
     transition: 100ms;
+    background: #fffaca;
     color: #124b54;
 }
 
@@ -59,39 +59,7 @@ ul {
 }
 
 
-@-webkit-keyframes shadow-drop-2-center {
-    0% {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        -webkit-box-shadow: 0 0 0 0 transparent;
-        box-shadow: 0 0 0 0 transparent
-    }
-
-    100% {
-        -webkit-transform: translateZ(50px);
-        transform: translateZ(50px);
-        -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, .35);
-        box-shadow: 0 0 20px 0 rgba(0, 0, 0, .35)
-    }
-}
-
-@keyframes shadow-drop-2-center {
-    0% {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        -webkit-box-shadow: 0 0 0 0 transparent;
-        box-shadow: 0 0 0 0 transparent
-    }
-
-    100% {
-        -webkit-transform: translateZ(50px);
-        transform: translateZ(50px);
-        -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, .35);
-        box-shadow: 0 0 20px 0 rgba(0, 0, 0, .35)
-    }
-
-}
-
 button:hover {
     width: 95%;
+    background: #fff7b3;
 }
