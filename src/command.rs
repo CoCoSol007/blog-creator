@@ -204,6 +204,7 @@ fn sync_article(articles: Vec<Article>)
 }
 
 fn create_html_file(title: String,description:String) {
+    let title_without_newlines = title.replace("\n", "");
     let html_content = format!(
         r#"<!DOCTYPE html>
         <html lang="en">
@@ -217,13 +218,42 @@ fn create_html_file(title: String,description:String) {
             <div id="main">
                 <h1>{}</h1>
                 <h2>{}</h2>
-
-                <a href="../main.html">Home</a>
+    
+                <a href="../main.html">Home</a>;
+                <div id="article">
+                    <script>
+                        function get_name() {{
+                            return fetch('http://192.168.1.19:3000/fichier/{}')
+                                .then(response => {{
+                                    if (!response.ok) {{
+                                        throw new Error('Réponse du serveur non valide');
+                                    }}
+                                    return response.text();
+                                }})
+                                .catch(error => {{
+                                    console.error('Erreur de chargement du JSON :', error);
+                                    throw error;
+                                }});
+                        }}
+    
+                        get_name()
+                            .then(name => {{
+                                const h1 = document.createElement("h3");
+                                h1.textContent = name;
+                                const targetDiv = document.getElementById("article");
+                                targetDiv.appendChild(h1);
+                            }})
+                            .catch(error => {{
+                                console.error('Erreur lors de la récupération du nom :', error);
+                            }});
+                    </script>
+                </div>
             </div>
         </body>
         </html>"#,
-        title, title, description
+        title, title, description, title_without_newlines
     );
+    
     if let Ok(mut html_file) =
                 File::create(format!("website/articles/{}.html", title.trim()))
             {

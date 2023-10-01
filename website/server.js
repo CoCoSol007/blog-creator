@@ -67,6 +67,22 @@ app.get('/blog.html', (req, res) => {
     res.sendFile(filePath);
 });
 
+const repertoireFichiers = '/website/articles/'; 
+
+app.get('/fichier/:nomFichier', (req, res) => {
+  const nomFichier = req.params.nomFichier;
+  const cheminFichier = path.join(__dirname, "articles",  nomFichier);
+
+  fs.readFile(cheminFichier, 'utf8', (err, data) => {
+    if (err) {
+      res.status(404).send('Fichier non trouvé');
+    } else {
+      res.send(data);
+    }
+  });
+});
+
+
 const port = 3000;
 
 app.listen(port, () => {
