@@ -1,5 +1,21 @@
 # Article Management Project
-This Rust project has been developed to manage and display articles stored in a JSON file. It includes a command-line interface for performing various operations such as creating, deleting, listing, and displaying articles. Additionally, there is an interactive HTML page that uses JavaScript to display the stored articles.
+This project has been developed to manage and display articles. It includes a command-line interface for performing various operations such as creating, deleting, listing, and displaying articles. Additionally, there is an interactive HTML page that uses JavaScript to display the stored articles.
+
+In the rust programmme there is an [IDE](https://github.com/Kofituo/pound/blob/search_arrows/src/main.rs). commands:
+- ctr+c: quit
+- ctr+s: save
+
+# HELP
+there are 8 commands :
+
+- quit: Quit the program.
+- list: List all articles.
+- clear: Clear the console screen.
+- show <index>: Show the details of the article at the specified index.
+- del <index>: Delete the article at the specified index
+- wirte <index>: wirte or edite an article at the specified index.
+- create: Create a new article.
+- help: Display this help message.
 
 # Features
 The project includes the following features:
