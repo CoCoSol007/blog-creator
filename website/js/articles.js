@@ -22,7 +22,7 @@ function createH1WithButton(title, text, path) {
 
 // Fonction pour lire le fichier CSV
 function readJSONAndCreateH1() {
-    fetch('http://192.168.1.19:3000/articles')
+    fetch('/articles')
         .then(response => response.json())
         .then(data => {
             data.forEach(function (item) {

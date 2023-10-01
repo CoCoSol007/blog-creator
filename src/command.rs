@@ -231,20 +231,20 @@ fn create_html_file(title: String,description:String) {
                                     return response.text();
                                 }})
                                 .catch(error => {{
-                                    console.error('Erreur de chargement du JSON :', error);
+                                    console.error('Erreur de chargement du texte :', error);
                                     throw error;
                                 }});
                         }}
-    
+                        
                         get_name()
-                            .then(name => {{
-                                const h1 = document.createElement("div");
-                                h1.textContent = name;
+                            .then(text => {{
+                                const pre = document.createElement("pre"); 
+                                pre.textContent = text;
                                 const targetDiv = document.getElementById("article");
-                                targetDiv.appendChild(h1);
+                                targetDiv.appendChild(pre);
                             }})
                             .catch(error => {{
-                                console.error('Erreur lors de la récupération du nom :', error);
+                                console.error('Erreur lors de la récupération du texte :', error);
                             }});
                     </script>
                 </div>
