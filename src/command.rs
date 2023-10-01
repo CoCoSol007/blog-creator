@@ -223,7 +223,7 @@ fn create_html_file(title: String,description:String) {
                 <h1>{}</h1>
                 <h2>{}</h2>
     
-                <a href="/">Home</a> <br><br>
+                <button onclick="window.location.href='/'">HOME</button><br>
                 <div id="article">
                     <script>
                         function get_name() {{

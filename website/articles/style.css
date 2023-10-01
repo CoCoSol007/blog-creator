@@ -1,18 +1,21 @@
 body {
-    background-color: #fbfff4;
-    font-family: 'Courier New', Courier, monospace;
+    background-color: #124b54;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: large;
     align-content: center;
+    color: #124b54;
+}
+
+a {
+    color: #071d20;
 }
 
 #main {
 
     width: 800px;
     margin: 0 auto;
-    border-radius: 39px;
-    background: linear-gradient(225deg, #ffffda, #d7e6b8);
-    box-shadow: -11px 11px 18px #b3bf99,
-        11px -11px 18px #ffffff;
+    border-radius: 10px;
+    background: #f9774b;
     text-align: center;
     align-content: center;
     padding-bottom: 100px;
@@ -23,9 +26,8 @@ body {
     margin: auto;
     width: 90%;
     border-radius: 50px;
-    background: #e8d497;
-    box-shadow:  20px 20px 44px #c5b480,
-                -20px -20px 44px #fff4ae;
+    background: #d65b2e;
+   
 }
 
 footer {
@@ -44,8 +46,9 @@ button {
     font-family: Arial;
     width: 90%;
     border-width: 0px;
-    background-color: #d7e6b8;
+    background-color: #d65b2e;
     transition: 100ms;
+    color: #124b54;
 }
 
 
@@ -90,7 +93,5 @@ ul {
 }
 
 button:hover {
-    width: 99%;
-    -webkit-animation: shadow-drop-2-center .4s cubic-bezier(.25, .46, .45, .94) both;
-    animation: shadow-drop-2-center .1s cubic-bezier(.25, .46, .45, .94) both
+    width: 95%;
 }
