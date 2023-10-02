@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Randomness
+</title>
+            <link rel="stylesheet" href="/style.css">
+        </head>
+        <body>
+            <div id="main">
+                <h1>Randomness
+</h1>
+                <h4>In this article we will talk about RANDOMNESS and especially why it does NOT exist !
+                </h4>
+    
+                <button onclick="window.location.href='/'">HOME</button><br>
+                <div id="article">
+                    <script>
+                        function get_name() {
+                            return fetch('/articles/Randomness')
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Réponse du serveur non valide');
+                                    }
+                                    return response.text();
+                                })
+                                .catch(error => {
+                                    console.error('Erreur de chargement du texte :', error);
+                                    throw error;
+                                });
+                        }
+                        
+                        get_name()
+                            .then(text => {
+                                const pre = document.createElement("pre"); 
+                                pre.textContent = text;
+                                const targetDiv = document.getElementById("article");
+                                targetDiv.appendChild(pre);
+                            })
+                            .catch(error => {
+                                console.error('Erreur lors de la récupération du texte :', error);
+                            });
+                    </script>
+                </div>
+            </div>
+        </body>
+        </html>
