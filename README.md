@@ -6,7 +6,7 @@ In the rust programmme there is an [IDE](https://github.com/Kofituo/pound/blob/s
 - ctr+s: save
 
 # HELP
-there are 8 commands :
+there are 8 commands in the command-line rust programme:
 
 - quit: Quit the program.
 - list: List all articles.
@@ -45,16 +45,14 @@ cargo build
 cargo run
 ```
 
-- Follow the on-screen instructions to manage your articles.
+- Follow the on-screen (tap : "help") instructions to manage your articles.
 
 
  # Dependencies
-Rust (programming language)
+Rust (programming language),
 Rust libraries: serde, serde_json, chrono...
-HTML and JavaScript (for displaying articles)
+HTML, CSS and JavaScript (for displaying articles),
+node for javaScripte.
 # Project Structure
-src/main.rs: Main source code for the command-line program.
-website/index.html: HTML page for displaying articles.
-website/script.js: JavaScript for loading and displaying articles from the JSON file.
-website/style.css: Stylesheet for the web page layout.
-website/data.json: JSON file containing article data.
+src/: Main source code for the command-line program.
+website/: Website part with HTML page, css style, JavaScripte server and json data 
