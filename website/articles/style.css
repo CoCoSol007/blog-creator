@@ -14,7 +14,7 @@ a {
 #main {
     width: 800px;
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: 4px;
     background: #fff; /* Fond de contenu blanc */
     text-align: center;
     align-content: center;
