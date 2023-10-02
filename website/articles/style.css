@@ -11,15 +11,23 @@ a {
     color: #202020; /* Couleur de lien légèrement plus foncée */
 }
 
+
+
 #main {
     width: 800px;
     margin: 0 auto;
+    margin-top: 100px;
     border-radius: 4px;
     background: #fff; /* Fond de contenu blanc */
     text-align: center;
     align-content: center;
-    padding-bottom: 10px;
+    padding-bottom: 50px;
+    padding-top: 50px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+h1 {
+    padding-bottom: 10px;
 }
 
 #article {
@@ -27,6 +35,8 @@ a {
     width: 90%;
     text-align: left;
     border-radius: 5px;
+    border: 1px solid black;
+    padding-left: 10px;
     background: #e7e7e7; /* Fond de l'article blanc */
 }
 
@@ -38,7 +48,10 @@ footer {
 }
 
 button {
-    border-width: 0px;
+    border-width: 1px;
+    border-bottom: 0px;
+    border-right: 0px;
+    border-left: 0px;
     margin: 10px;
     cursor: pointer;
     font-size: 15px;
